@@ -1,0 +1,26 @@
+<mat-toolbar style="background-color: #333;">
+  <span style="color: white;">Shopeasy</span>
+  <span class="space-buttons"></span>
+
+  <!-- Login/Logout Button -->
+  <button *ngIf="!isLoggedIn()" routerLink="/login" mat-raised-button [color]="'grey'">
+    Login
+  </button>
+  <button *ngIf="isLoggedIn()" (click)="logout()" mat-raised-button [color]="'grey'">
+    Logout
+  </button>
+</mat-toolbar>
+
+<mat-toolbar style="background-color: #333;" *ngIf="isLoggedIn()">
+  <!-- Navigation Buttons for Logged-in Users -->
+  <button mat-raised-button [color]="'grey'" routerLink="/">Home</button>
+  
+  <!-- Buttons for Non-admin Users -->
+  <button *ngIf="!isAdmin()" mat-raised-button [color]="'grey'" routerLink="/cart">Cart</button>
+  <button *ngIf="!isAdmin()" mat-raised-button [color]="'grey'" routerLink="/myOrders">My Orders</button>
+  
+  <!-- Buttons for Admin Users -->
+  <button *ngIf="isAdmin()" mat-raised-button [color]="'grey'" routerLink="/addNewProduct">Add New Product</button>
+  <button *ngIf="isAdmin()" mat-raised-button [color]="'grey'" routerLink="/showProductDetails">Show Product Details</button>
+  <button *ngIf="isAdmin()" mat-raised-button [color]="'grey'" routerLink="/orderInformation">Order Information</button>
+</mat-toolbar>
