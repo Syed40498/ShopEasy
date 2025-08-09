@@ -1,10 +1,14 @@
 package com.Sayyad.ShopEasy.Service;
 
+import com.Sayyad.ShopEasy.Entity.Role;
 import com.Sayyad.ShopEasy.Entity.User;
+import com.Sayyad.ShopEasy.Repository.RoleRepository;
 import com.Sayyad.ShopEasy.Repository.UserRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +21,9 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -37,6 +44,16 @@ public class UserService implements UserDetailsService {
         user.setMobileNumber(mobileNumber);
         user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);
+
+        Set<Role> roles = new HashSet<>();
+        Role customerRole = roleRepository.findByName("Customer").orElseGet(() -> {
+            Role newRole = new Role();
+            newRole.setName("Customer");
+            return roleRepository.save(newRole);
+        });
+        roles.add(customerRole);
+
+        user.setRoles(roles);
         return userRepository.save(user);
     }
 
